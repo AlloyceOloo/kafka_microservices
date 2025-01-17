@@ -11,10 +11,10 @@ import (
 func main() {
 	
 		consumer, err := kafka.NewConsumer(&kafka.ConfigMap{
-			"bootstrap.servers": "pkc-619z3.us-east1.gcp.confluent.cloud:9092",
+			"bootstrap.servers": "",
 			"security.protocol": "SASL_SSL",
-			"sasl.username": "TYNKLLJMPGCT4C3L",
-			"sasl.password": "kUp7KuyBiAH/f2+ltEPaRQs1C93uT5A4HzCejxujZ9FROckxq3HVSI2bmgk8fJxG",
+			"sasl.username": "",
+			"sasl.password": "",
 			"sasl.mechanisms": "PLAIN",
 			"group.id":          "myGroup",
 			"auto.offset.reset": "earliest",
@@ -24,16 +24,9 @@ func main() {
 			panic(err)
 		}
 
-		err = consumer.SubscribeTopics([]string{"default"}, nil)
+		consumer.SubscribeTopics([]string{"default"}, nil)
 
-		if err != nil {
-			panic(err)
-		}
-
-		// A signal handler or similar could be used to set this to false to break the loop.
-		run := true
-
-		for run {
+		for {
 			msg, err := consumer.ReadMessage(time.Second)
 			if err != nil {
 					//fmt.Printf("Message on %s: %s\n", msg.TopicPartition, string(msg.Value))
